@@ -13,11 +13,8 @@ var {
   View,
 } = React;
 
-var MOCKED_MOVIES_DATA = [
-  {title: 'Title', year: '2015', posters: {thumbnail: 'http://i.imgur.com/UePbdph.jpg'}},
-];
 
-var REQUEST_URL = 'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json';
+var REQUEST_URL = 'https://localhost:3000';
 // this will be referencing the api that we built (topthat rails backend)
 
 
@@ -26,7 +23,7 @@ var TopThat = React.createClass({
   getInitialState: function(){
     return {
       // movies here will actually be 'publicArenas'
-      movies: null,
+    videos: null,
     }
   },
 
@@ -36,21 +33,21 @@ var TopThat = React.createClass({
 
   fetchData: function(){
     fetch(REQUEST_URL)
-    .then((response) => response.json())
+    // .then((response) => response.json())
     .then((responseData) => {
       this.setState({
-        movies: responseData.movies,
+        videos: responseData.videos,
       });
     }).done();
   },
 
   render: function() {
-      if (!this.state.movies){
+      if (!this.state.videos){
         return this.renderLoadingView();
       }
 
-    var movie = this.state.movies[0];
-    return this.renderMovie(movie);
+    var video = this.state.videos[0];
+    return this.renderVideo(video);
   },
 
   renderLoadingView: function(){
@@ -66,17 +63,12 @@ var TopThat = React.createClass({
 
 
 
-  renderMovie: function(movie){}
+  renderVideo: function(video){
   return (
-      <View style={styles.container}>
-        <Image
-            source={{uri: movie.posters.thumbnail}}
-            style ={styles.thumbnail}
-            />
+
         <View style={styles.rightContainer}>
-        <Text style={styles.title}>{movie.title}</Text>
-        <Text style={styles.year}>{movie.year}</Text>
-      </View>
+        <Text style={styles.title}>{video.title}</Text>
+        <Text style={styles.year}>{video.created_at}</Text>
       </View>
     );
   }
