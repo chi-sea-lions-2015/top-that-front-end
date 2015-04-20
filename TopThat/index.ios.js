@@ -11,19 +11,21 @@ var {
   StyleSheet,
   Text,
   View,
+  ListView
 } = React;
 
 
-var REQUEST_URL = 'https://localhost:3000';
+
+var REQUEST_URL = 'https://topthat.herokuapp.com';
 // this will be referencing the api that we built (topthat rails backend)
 
 
-var TopThat = React.createClass({
+var TopThatIndex = React.createClass({
   // adding an initial state function that will let us know if loading was successful
   getInitialState: function(){
     return {
       // movies here will actually be 'publicArenas'
-    videos: null,
+      movies: null ,
     }
   },
 
@@ -33,21 +35,26 @@ var TopThat = React.createClass({
 
   fetchData: function(){
     fetch(REQUEST_URL)
-    // .then((response) => response.json())
+    .then((response) => response.json())
     .then((responseData) => {
       this.setState({
-        videos: responseData.videos,
+        movies: responseData,
+
       });
     }).done();
   },
 
   render: function() {
-      if (!this.state.videos){
+    console.log(this.state.movies)
+      if (!this.state.movies){
+        console.log("hello?")
         return this.renderLoadingView();
       }
 
-    var video = this.state.videos[0];
-    return this.renderVideo(video);
+
+
+    var movie = this.state.movies[0];
+    return this.renderMovie(movie);
   },
 
   renderLoadingView: function(){
@@ -63,12 +70,13 @@ var TopThat = React.createClass({
 
 
 
-  renderVideo: function(video){
+  renderMovie: function(movie){
   return (
-
+      <View style={styles.container}>
         <View style={styles.rightContainer}>
-        <Text style={styles.title}>{video.title}</Text>
-        <Text style={styles.year}>{video.created_at}</Text>
+        <Text style={styles.title}>{movie.title}</Text>
+        <Text style={styles.year}>{movie.created_at}</Text>
+      </View>
       </View>
     );
   }
@@ -105,4 +113,4 @@ var styles = StyleSheet.create({
 
 });
 
-AppRegistry.registerComponent('TopThat', () => TopThat);
+AppRegistry.registerComponent('TopThat', () => TopThatIndex);
